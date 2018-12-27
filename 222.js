@@ -61,6 +61,10 @@ console.log("after"+nish);
 // 	]
 // }
 
+// restful风格
+url="xxx/xxx?id="+code
+url="xxx/xxx/"{code}
+
 
 
  res.data.data.tech.map((value, index) => {
@@ -77,14 +81,17 @@ optionname => "科技"
 
         newvoteoption =>  ["科技"]
 
-        newvoteoption =>  ["科技","科技"]  数组
+        newvoteoption =>  ["科技","科技"]	//数组
         item =》 newvoteoption【0】  =>  "科技"
 
         newvoteoption => [
         	{
         		name:"科技"
         	}
-        ]   json数组
+        ]	//json数组
+
+        newvoteoption => {
+        		name:"科技"
+        	}	//json
         item =》 newvoteoption【0】  =>  {name:"科技"}
         item.name =》 newvoteoption【0】.name  =>  "科技"
-

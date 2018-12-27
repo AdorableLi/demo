@@ -3,8 +3,20 @@
 <head>
 	<title>33333</title>
 	<link rel="stylesheet" type="text/css" href="./111.css">
+	<script type="text/javascript" src="./jquery-3.3.1.min.js"></script>
 </head>
 <body>
 	<div class="name2">你是我儿子</div>
+	<script type="text/javascript">
+		$.ajax({
+		　　type: 'GET', 
+		      url: "url",
+		      data: data,
+		      dataType: xml/json/script/html,
+		      success: function(data) {
+		      	$(".name2").val("");
+		      },
+		})
+	</script>
 </body>
 </html>
