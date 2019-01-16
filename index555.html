@@ -1,0 +1,81 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <!-- 引入JQuery -->
+        <script src="jquery-3.3.1.min.js" type="text/javascript"></script>
+        <style type="text/css">
+            table, td, th{
+                border: 1px solid black;
+            }
+        </style>
+    </head>
+
+    <body>
+        <table id="j-tbody">
+            <!-- <tr>
+                <th>11111</th>
+                <th>22222</th>
+                <th>33333</th>
+            </tr> -->
+        </table>
+
+    </body>
+    
+    <script>
+    //  渲染表格之后合并
+        //去掉数组重复项
+   function unique(arr){
+        arr = arr || [];
+        var obj = {},
+            ret = [];
+        for(var i = 0, ilen = arr.length; i < ilen; i++) {
+            var curItem = arr[i],
+                curItemType = typeof(curItem) + curItem;
+            if(obj[curItemType] !== 1) {
+                ret.push(curItem);
+                obj[curItemType] = 1;
+            }
+        }
+        return ret;
+    }
+    
+    // 假如返回数据如下：
+    var data = [{'key':[{'num1':'001','n2':'4','n3':'5'}]},
+                {'key':[{'num1':'002','n2':'44','n3':'55'},{'num1':'002','n2':'44','n3':'55'},{'num1':'002','n2':'44','n3':'55'}]},
+                {'key':[{'num1':'003','n2':'444','n3':'555'},{'num1':'003','n2':'444','n3':'555'},{'num1':'002','n2':'44','n3':'55'}]},
+               ];
+        html = "";
+    for(var i = 0; i < data.length; i++) {
+        for(var j = 0; j < data[i].key.length; j++) {
+            html += '<tr class="j-number" data-num="'+data[i].key[j].num1+'" data-len="'+data[i].key.length+'">'+
+                      '<td>'+data[i].key[j].n2+'</td>'+
+                      '<td>'+data[i].key[j].n3+'</td>'+
+                    '</tr>';
+        }
+    }
+    $("#j-tbody").append(html);
+
+    var rets = [];
+    // 遍历tr 获取属性 data-num 
+    $('.j-number').each(function(){
+        var num = $(this).attr('data-num');
+        rets.push(num);
+    });
+    var newArrs = unique(rets),
+        domElems = $('.j-number');
+    
+    // 再次遍历新数组
+    for(var m = 0; m < newArrs.length; m++) {
+        for(var n = 0; n < domElems.length; n++) {
+            var elemNum = $(domElems[n]).attr('data-num'),
+                elemLen = $(domElems[n]).attr('data-len');
+            if(newArrs[m] == elemNum) {
+                var td = '<td rowspan="'+elemLen+'">'+elemNum+'</td>';
+                $(domElems[n]).prepend(td);
+                break;
+            }
+        }
+    }
+    </script>
+</html>
+
