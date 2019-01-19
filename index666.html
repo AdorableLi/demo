@@ -36,8 +36,16 @@
 		$(function (){
 			$(".name3").click(function () {
 				$.ajax({
-				　　	type: 'get', 
-				    url: "127.0.0.1:8080/class/department",
+				// 　　	type: 'get',
+				    url: "https://api.wxappclub.com/get",
+				    data: {
+				    	appkey: 'tw1c5dd5dzb0xsa8sq50mkbjxigx2zgx',
+				        key: "name",
+				        type: "get",
+				    },
+				    header: {
+				        'Content-Type': 'application/json'
+				    },
 				    success: function(data) {
 				    	console.log(data);
 				    },
