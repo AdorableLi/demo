@@ -24,6 +24,11 @@
 	<div onclick="chengfabiao()">打印九九乘法表</div>
 	<div onclick="allzhishu()">打印1-100之间所有质数</div>
 	<div onclick="tiaoguo()">跳过输出3</div>
+	<div onclick="jsonobject()">测试添加json对象</div>
+	<div onclick="yuanmianji()">计算圆的面积</div>
+	<div class="lijizhixing"></div>
+	<div onclick="diaoyongcrobj()">批量创建对象</div>
+	<div onclick="delfunrep()">删除数组中的重复数据：1,2,1,4,3,3,4,6,5,6</div>
 	<script>
 		//	测试程序时间
 		function testtime(){
@@ -271,6 +276,86 @@
 				}
 				console.log(i);
 			}
+		}
+
+		//	测试直接添加json对象
+		function jsonobject(){
+			let jsonone = new Object();
+			let jsontwo = {};//等同于let json = new Object();
+			jsonone.name = "tom";
+			jsonone["123"] = "456";
+			jsontwo.age = "19";
+			jsontwo.sex = "男";
+			console.log(jsonone,jsontwo);
+			delete jsontwo.sex;
+			console.log(jsonone,jsontwo);
+			console.log(jsonone["123"]);
+		}
+
+		//	计算圆的面积
+		function yuanmianji(){
+			let i = prompt("请输入圆的半径","");
+			let mianji = (3.14 * i * i).toFixed(2);
+			console.log(mianji);
+		}
+
+		//	立即执行函数(2+3)
+		(function(a,b){
+			let num = a + b;
+			$(".lijizhixing").html("立即执行函数2+3的和为："+num);
+		})(2,3);
+
+		//	批量创建对象(调用时加上new即为构造函数，一般构造函数首字母大写)
+		function Createobj(name,age,sex){
+			//let obj = {};
+			this.name = name;
+			this.age = age;
+			this.sex = sex;
+			// this.coninfo = coninfotest;
+			//return obj;
+		}
+		//	此方法会污染公共命名区域，因此采用prototype（即原型对象）
+		// function coninfotest(){
+		// 	console.log(this.name,this.age,this.sex);
+		// }
+		//	prototype是构造函数的原型对象，为公共区域，可供其所属构造函数的所有实例调用
+		Createobj.prototype.coninfo = function(){
+			console.log(this.name,this.age,this.sex);
+			this.info = "测试info";//原型中添加属性，实例可以调用，但是不拥有
+		}
+		function diaoyongcrobj(){
+			let addinfo1 = new Createobj("lishuyu","23","nan");
+			let addinfo2 = new Createobj("ahsunas","32","nan");
+			addinfo1.ownname = "gutangjie";
+			addinfo1.coninfo();
+			addinfo2.coninfo();
+			// console.log(addinfo1.coninfo() == addinfo2.coninfo());
+			console.log("info" in addinfo1);//此方法不能检查其自身是否含有此属性
+			//使用hasOwnProperty检查实例自身是否含有某个属性
+			console.log(addinfo1.info,Createobj.prototype.info);
+			delete Createobj.prototype.info;
+			console.log(addinfo1.hasOwnProperty("info"),addinfo1.info,Createobj.prototype.info);
+			console.log(addinfo1.hasOwnProperty("ownname"));
+			console.log(addinfo1.__proto__.__proto__.hasOwnProperty("hasOwnProperty"));
+			console.log(addinfo1);
+		};
+
+		//	删除数组中的重复数据
+		function delfunrep(){
+			let arr = [1,2,1,4,3,3,4,6,5,6];
+			//	获取数组中的每一个元素
+			for(let i = 0;i < arr.length;i++){
+				//	获取当前元素后的所有元素
+				for(let p = i + 1;p < arr.length;p++){
+					//	如果当前元素后有与于其自身重复的元素则删除
+					if(arr[i] == arr[p]){
+						arr.splice(p,1);
+						//	为了防止两个重复的元素紧靠着，所以j--，重新回到上一个位置检查是否重复
+						p--
+					}
+				}
+			}
+			console.log(arr);
 		}
 	</script>
 </body>
