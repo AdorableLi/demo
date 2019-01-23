@@ -31,4 +31,7 @@ Createobj.prototype.coninfo = function(){
     console.log(addinfo1);
 
     //  此时保存在原obj堆内存中的内容不再被引用，浏览器将自动清楚垃圾
-    obj = null;
+    // obj = null;
+
+
+    
