@@ -43,7 +43,7 @@
 	<div onclick="zhengze()">正则表达式</div>
 	<div id="divmouse">div随着鼠标移动</div>
 	<div id="moreclick">绑定多个单击事件</div>
-	<script>
+	<script type="text/babel">
 		/*
 		* @Author: LiShuYu 
 		* @Date: 2019-01-22 12:29:01 
@@ -73,7 +73,7 @@
 		})
 
 		//	分割数组数据
-		let list = [{name: 'x',age: 18},{name: 'y',age: 19},{name: 'x', age: 19}];
+		var list = [{name: 'x',age: 18},{name: 'y',age: 19},{name: 'x', age: 19}];
 
 		//	根据年龄重新构造数组
 		function age(){
@@ -503,13 +503,19 @@
 
 		//	绑定多个单击事件
 		let moreclick = document.getElementById("moreclick");
-		addEventListener = 
-		moreclick.addEventListener("click",function(){
-			console.log("这是多次点击事件的第一次点击")
-		},false);
-		moreclick.addEventListener("click",function(){
-			console.log("这是多次点击事件的第二次点击")
-		},false);
+		function bind(obj,eventstr,callback){
+			if(obj.addEventListener){
+				obj.addEventListener(eventstr,callback,false);
+			}else{
+				obj.attachEvent("on"+eventstr,callback);
+			}
+		}
+		bind(moreclick,"click",function(){
+			console.log("第一次点击事件");
+		});
+		bind(moreclick,"click",function(){
+			console.log("第二次点击事件");
+		});
 	</script>
 </body>
 </html>
