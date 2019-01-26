@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>history第一个测试页面</title>
+</head>
+<body>
+    <p>我是history第一个测试页面</p>
+    <p>ONE!!!</p>
+    <a href="index222.html">index222</a>
+    <a href="history_test2.html">history_test2</a>
+    <button id="back">回退</button>
+    <button id="forward">前进</button>
+
+    <script>
+        let back = document.getElementById("back");
+        let forward = document.getElementById("forward");
+		back.onclick = function(){
+            history.back();
+        }
+        forward.onclick = function(){
+            history.forward();
+        }
+    </script>
+</body>
+</html>

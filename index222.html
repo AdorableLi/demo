@@ -15,6 +15,21 @@
 			height:25px;
 			position: absolute;
 		}
+		#tuozhuai1,#tuozhuai2,#movediv{
+			width:200px;
+			height:25px;
+			position: absolute;
+			border: 1px solid black;
+		}
+		#scrolldiv{
+			width:200px;
+			height:60px;
+			margin-top: 40px;
+			border: 1px solid black;
+		}
+		#llq{
+			margin-top: 30px;
+		}
 	</style>
 	<div onclick="testtime()">测试程序时间</div>
 	<div class="name2">分割数组</div>
@@ -43,14 +58,21 @@
 	<div onclick="zhengze()">正则表达式</div>
 	<div id="divmouse">div随着鼠标移动</div>
 	<div id="moreclick">绑定多个单击事件</div>
+	<div id="tuozhuai1">拖拽div以移动1</div>&nbsp;
+	<div id="tuozhuai2">拖拽div以移动2</div>
+	<div id="scrolldiv">滚动滚轮以改变div高度</div>
+	<input type="text" id="keyinput">
+	<div id="movediv"></div>
+	<div id="llq">判断当前浏览器</div>
+	<div id="history"><a href="history_test1.html">history</a></div>
 	<!-- <script src="browser.min.js"></script> -->
 	<script type="text/javascript">
 	// <script type="text/babel">
 		/*
 		* @Author: LiShuYu 
 		* @Date: 2019-01-22 12:29:01 
- * @Last Modified by: LiShuYu
- * @Last Modified time: 2019-01-26 15:39:42
+		* @Last Modified by: LiShuYu
+		* @Last Modified time: 2019-01-26 19:26:33
 		*/
 	   
 		//	测试程序时间
@@ -60,7 +82,7 @@
 			console.timeEnd("test");
 		}
 
-
+		//	使用本地地址对接接口
 		$(".name2").click(function () {
 			$.ajax({
 			　　	type: 'get', 
@@ -509,7 +531,10 @@
 			if(obj.addEventListener){
 				obj.addEventListener(eventstr,callback,false);
 			}else{
-				obj.attachEvent("on"+eventstr,callback);
+				//	兼容IE8即以下版本，使得能够使用this（chrome中this为button，ie中为window）
+				obj.attachEvent("on"+eventstr,function(){
+					callback.call(obj);
+				});
 			}
 		}
 		bind(moreclick,"click",function(){
@@ -518,9 +543,124 @@
 		bind(moreclick,"click",function(){
 			console.log("第二次点击事件");
 		});
+
+		//	拖拽
+		function drag(obj){
+			obj.onmousedown = function(event){
+				//	设置IE8以下对拖拽事件地的捕获
+				// if(obj.setCapture){
+				// 	obj.setCapture();
+				// }
+				obj.releaseCapture && obj.releaseCapture();
+				event = event || window.event;//	设置浏览器兼容性
+				let divx = event.clientX - obj.offsetLeft;
+				let divy = event.clientY - obj.offsetTop;
+				document.onmousemove = function(event){
+					event = event || window.event;//	设置浏览器兼容性
+					let x = event.clientX;
+					let y = event.clientY;
+					obj.style.cssText = "left:"+(x-divx)+"px;top:"+(y-divy)+"px";
+				}
+				document.onmouseup = function(){
+					document.onmousemove = null;
+					document.onmouseup = null;
+					//	设置IE8以下取消对拖拽事件的捕获
+					// if(obj.releaseCapture){
+					// 	obj.releaseCapture();
+					// }
+					obj.releaseCapture && obj.releaseCapture();
+				}
+				return false;
+			};
+		}
+		let tuozhuai1 = document.getElementById("tuozhuai1");
+		let tuozhuai2 = document.getElementById("tuozhuai2");
+		drag(tuozhuai1);
+		drag(tuozhuai2);
+
+		//	滚动滚轮以改变div高度
+		let scrolldiv = document.getElementById("scrolldiv");
+		scrolldiv.onmousewheel = function(event){
+			event = event || window.event;
+			//	判断鼠标滚动方向(火狐中使用detail)
+			let x = event.wheelDelta || event.detail;
+			let divheight = scrolldiv.offsetHeight;
+			if(x > 0){
+				scrolldiv.style.height = (divheight - 15) + "px";
+			}else{
+				scrolldiv.style.height = (divheight + 15) + "px";
+			}
+			//	使用addEventListener()绑定相应函数，取消默认事件的时候不能使用return false
+			event.preventDefault() && event.preventDefault();//有就用，没有就别用
+			return false;
+		}
+		//	火狐不支持onmousewheel，需要使用addEventListener绑定，因此使用bind，将onmousewheel整个当成参数传入即可
+		bind(scrolldiv,"DOMMouseScroll",scrolldiv.onmousewheel);
+
+		//	判断ctrl和y是否被同时按下
+		let keyinput = document.getElementById("keyinput");
+		keyinput.onkeydown = function(event){
+			event = event || window.event;
+			console.log(event.keyCode);
+			// 提供了altKey ctrlKey shiftKey三个属性方便分别判断三个按键
+			if(event.keyCode == 89 && event.ctrlKey){
+				console.log("同时按下了Y键和ctrl键");
+			}else if((event.keyCode >= 48 && event.keyCode <= 57) || (event.keyCode >= 96 && event.keyCode <= 105) || event.keyCode == 229){
+				//	禁止输入数字
+				return false;
+			}
+		}
+
+		//	使用键盘控制div移动
+		let movediv = document.getElementById("movediv");
+		document.onkeydown = function(event){
+			event = event || window.event;
+			let left = movediv.offsetLeft;
+			let top = movediv.offsetTop;
+			let speed = 10;
+			//	按下ctrl加速
+			if (event.ctrlKey){
+				speed = 20;
+			}
+			switch(event.keyCode){
+				case 38:
+					movediv.style.top = (top - speed) + "px";
+					break;
+				case 39:
+					movediv.style.left = (left + speed) + "px";
+					break;
+				case 40:
+					movediv.style.top = (top + speed) + "px";
+					break;
+				case 37:
+					movediv.style.left = (left - speed) + "px";
+					break;
+			}
+		}
+
+		//	Bom---Window、Navigator、Location、History、Screen
+		let llq = document.getElementById("llq");
+		let llqinfo = navigator.userAgent;
+		bind(llq,"click",function(){
+			if(/firefox/i.test(llqinfo)){
+				console.log("火狐");
+			}else if(/chrome/i.test(llqinfo)){
+				console.log("chrome");
+			}else if(/msie/i.test(llqinfo)){
+				console.log("IE");
+			}
+			//	IE11无法通过userAgent判断，则需要通过ActiveXObject
+			//	如果存在此属性，则是IE浏览器，这个属性是IE浏览器独有的
+			if("ActiveXObject" in window){
+				console.log("IE");
+			}else{
+				console.log("不是IE");
+			}
+		})
+
+		//	history--back()回退，forward()前进，length查看链接数量	具体效果见测试网页1和2
+		//	go()可以跳到指定页面，1表示向前跳转一个页面，2表示向前跳转，同理，-2表示向后跳转两个页面
+		
 	</script>
 </body>
 </html>
-
-
-<!-- 使用本地地址对接接口 -->
