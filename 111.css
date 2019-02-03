@@ -1,4 +1,74 @@
+/*
+ * @Author: LiShuYu 
+ * @Date: 2019-01-27 17:21:03 
+ * @Last Modified by: LiShuYu
+ * @Last Modified time: 2019-01-27 18:02:50
+ */
 .name2{
 	color: red;
 	font-size: 20px;
+}
+#divmouse{
+	width:200px;
+	height:25px;
+	position: absolute;
+}
+#tuozhuai1,#tuozhuai2,#movediv{
+	width:200px;
+	height:25px;
+	position: absolute;
+	border: 1px solid black;
+}
+#scrolldiv{
+	width:200px;
+	height:60px;
+	margin-top: 40px;
+	border: 1px solid black;
+}
+#llq{
+	margin-top: 30px;
+}
+#lunbotu{
+	width: 420px;
+	height: 260px;
+	margin: 0 auto;
+	background-color: bisque;
+	position: relative;
+	overflow: hidden;
+}
+#imglist{
+	/* width: 2100px; */
+	height: 100%;
+	padding: 0;
+	margin: 0;
+	position: absolute;
+	left: 0;
+}
+#lunbotu li{
+	list-style: none;
+	float: left;
+}
+#lunbotu img{
+	width: 400px;
+	height: 240px;
+	margin: 10px;
+}
+#nav{
+	position: absolute;
+    top: 220px;
+    /* left: 150px; */
+}
+#nav a{
+	width: 15px;
+	height: 15px;
+	background-color: red;
+	opacity: 0.5;
+	filter: alpha(opacity=50);
+	margin: 5px;
+	float: left;
+}
+#nav a:hover{
+	/* opacity: 0.5;
+	filter: alpha(opacity=50); */
+	background-color: green
 }

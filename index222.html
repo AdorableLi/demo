@@ -9,28 +9,6 @@
 	<script src="jquery-3.3.1.min.js" type="text/javascript"></script>
 </head>
 <body>
-	<style type="text/css">
-		#divmouse{
-			width:200px;
-			height:25px;
-			position: absolute;
-		}
-		#tuozhuai1,#tuozhuai2,#movediv{
-			width:200px;
-			height:25px;
-			position: absolute;
-			border: 1px solid black;
-		}
-		#scrolldiv{
-			width:200px;
-			height:60px;
-			margin-top: 40px;
-			border: 1px solid black;
-		}
-		#llq{
-			margin-top: 30px;
-		}
-	</style>
 	<div onclick="testtime()">测试程序时间</div>
 	<div class="name2">分割数组</div>
 	<div onclick="age()">根据年龄重新构造数组</div>
@@ -65,14 +43,32 @@
 	<div id="movediv"></div>
 	<div id="llq">判断当前浏览器</div>
 	<div id="history"><a href="history_test1.html">history</a></div>
+	<div id="location">获取地址栏信息</div>
+	<div id="lunbotu">
+		<ul id="imglist" style="left:0px;">
+			<li><img src="images/img1.jpg" alt=""></li>
+			<li><img src="images/img2.jpg" alt=""></li>
+			<li><img src="images/img3.jpg" alt=""></li>
+			<li><img src="images/img4.jpg" alt=""></li>
+			<li><img src="images/img5.jpg" alt=""></li>
+		</ul>
+		<div id="nav">
+			<a href="javascript:;"></a>
+			<a href="javascript:;"></a>
+			<a href="javascript:;"></a>
+			<a href="javascript:;"></a>
+			<a href="javascript:;"></a>
+		</div>
+	</div>
+	<div id="checkclass" class="checkclass">检查有无classname</div>
 	<!-- <script src="browser.min.js"></script> -->
 	<script type="text/javascript">
 	// <script type="text/babel">
 		/*
 		* @Author: LiShuYu 
 		* @Date: 2019-01-22 12:29:01 
-		* @Last Modified by: LiShuYu
-		* @Last Modified time: 2019-01-26 19:26:33
+ 		* @Last Modified by: LiShuYu
+ 		* @Last Modified time: 2019-01-27 19:55:58
 		*/
 	   
 		//	测试程序时间
@@ -544,7 +540,7 @@
 			console.log("第二次点击事件");
 		});
 
-		//	拖拽
+		//	拖拽div以改变位置
 		function drag(obj){
 			obj.onmousedown = function(event){
 				//	设置IE8以下对拖拽事件地的捕获
@@ -613,29 +609,39 @@
 
 		//	使用键盘控制div移动
 		let movediv = document.getElementById("movediv");
+		let speed = 10;
+		let dir = 0;//添加方向变量，配合setInterval，使得按住按键时，不会出现移动卡顿效果
 		document.onkeydown = function(event){
 			event = event || window.event;
-			let left = movediv.offsetLeft;
-			let top = movediv.offsetTop;
-			let speed = 10;
 			//	按下ctrl加速
 			if (event.ctrlKey){
 				speed = 20;
+			}else{
+				speed = 10;
 			}
-			switch(event.keyCode){
-				case 38:
-					movediv.style.top = (top - speed) + "px";
-					break;
-				case 39:
-					movediv.style.left = (left + speed) + "px";
-					break;
-				case 40:
-					movediv.style.top = (top + speed) + "px";
-					break;
-				case 37:
-					movediv.style.left = (left - speed) + "px";
-					break;
+			dir = event.keyCode;
+		};
+		setInterval(function(){
+			let left = movediv.offsetLeft;
+			let top = movediv.offsetTop;
+			// switch(event.keyCode){
+			switch(dir){
+			case 38:
+				movediv.style.top = (top - speed) + "px";
+				break;
+			case 39:
+				movediv.style.left = (left + speed) + "px";
+				break;
+			case 40:
+				movediv.style.top = (top + speed) + "px";
+				break;
+			case 37:
+				movediv.style.left = (left - speed) + "px";
+				break;
 			}
+		},30)
+		document.onkeyup = function(){
+			dir = 0;
 		}
 
 		//	Bom---Window、Navigator、Location、History、Screen
@@ -660,7 +666,180 @@
 
 		//	history--back()回退，forward()前进，length查看链接数量	具体效果见测试网页1和2
 		//	go()可以跳到指定页面，1表示向前跳转一个页面，2表示向前跳转，同理，-2表示向后跳转两个页面
-		
+
+		//	location----获取当前地址栏信息
+		let loc = document.getElementById("location");
+		bind(loc,"click",function(){
+			//	修改location可以跳转页面，并且生成相应的历史纪录，此时可以使用history进行前进后退
+			// window.location = "history_test1.html";//相当于location.assign("history_test1.html");
+			//location.reload(true);//	重新加载文档,传入true则为强制清空缓存刷新，相当于ctrl+F5
+			location.replace("history_test1.html");//新加载文档，不生成历史纪录，不能使用history回退前进
+		})
+
+		//	获取元素的样式---style值
+		function getstyle(obj,name){
+			if(window.getComputedStyle){
+				//	正常浏览器，有getComputedStyle()方法的
+				return getComputedStyle(obj,null)[name];
+			}else{
+				//	IE浏览器，只能使用currentStyle()方法的
+				return obj.currentStyle[name];
+			}
+		}
+
+		//	轮播图
+		let arr = ["images/img1.jpg","images/img2.jpg","images/img3.jpg","images/img4.jpg","images/img5.jpg"];
+		let lunbotu = document.getElementById("lunbotu");
+		let imglist = document.getElementById("imglist");
+		let nav = document.getElementById("nav");
+		let index = 0;
+		let alla = nav.getElementsByTagName("a");
+		imglist.style.width = lunbotu.offsetWidth * arr.length + "px";
+		nav.style.left = (lunbotu.offsetWidth - nav.offsetWidth)/2 + "px";
+		alla[index].style.backgroundColor = "green";
+		//	点击超链接切换到制定图片
+		for(let i = 0;i < alla.length;i++){
+			//	为每一个超链接添加i属性方便辨别
+			alla[i].num = i;
+			alla[i].onclick = function(){
+				alla[index].style.backgroundColor = "red";
+				index = this.num;
+				imglist.style.left = "-" + (index * lunbotu.offsetWidth) + "px";
+				alla[index].style.backgroundColor = "green";
+			}
+		}
+		//	图片自动切换
+		let lbttimer;
+		let lbtspeed = 10;
+		let oldval = imglist.offsetLeft;
+		index += 1;
+		setInterval(function(){
+			if(index >= 5){
+				index = 1;
+				console.log(index);
+			}
+			else if(parseInt(imglist.style.left) <= -1680){
+				imglist.style.left = "0px";
+				// console.log("将偏移量调整为0")
+			}
+			console.log(imglist.style.left);
+			lbttimer = setInterval(function(){
+				oldval += lbtspeed;
+				if(index >= arr.length){
+					index = 0;
+				}
+				if(oldval >= 420 * index){
+					clearInterval(lbttimer);
+					index++;
+				}
+				imglist.style.left = "-"+oldval+"px";
+				// console.log(oldval);
+				// console.log(index);
+			},40)
+		},3000)
+
+		// var imglist=document.getElementById("imglist");
+        // var imgArr=document.getElementsByTagName("img");
+        // imglist.style.width=400*imgArr.length+200+"px";
+		// //	设置导航居中 ,导航样式
+        // var nav=document.getElementById("nav");
+        // var lunbotu=document.getElementById("lunbotu");
+        // nav.style.left=(lunbotu.offsetWidth-nav.offsetWidth)/2+"px";
+        // var index=0;
+        // var allA=document.getElementsByTagName("a");
+        // allA[index].style.backgroundColor="black";
+		// //	点击导航栏变换图片
+        // for(i=0;i<allA.length;i++){
+        //     allA[i].num=i; //给做标记,不然绑定函数之后i在单击响应里只能取到最后一个数
+        //     allA[i].onclick=function () {
+        //         clearInterval(timer);
+        //       index= this.num;
+        //       setA();
+        //       move(imglist,"left",-420*index,20,autoChange())
+        //     };
+        // }
+		// autoChange()
+		// let timer;
+		// function autoChange() {
+        // 	//	开启定时器
+        //     window.timer=setInterval(function () {
+        //         index++;
+        //         index %= imgArr.length;  //循环起来使得
+        //         move(imglist,"left",-420*index,20,setA())
+        //     },3000);
+        // }
+
+		// //	设置导航栏
+        // function setA(){
+        //     if(index>=imgArr.length-1){
+        //         index=0;
+        //         imglist.style.left=0;
+        // }
+        //     for(i=0;i<allA.length;i++){
+        //         allA[i].style.backgroundColor="";  //该设置为内联样式，覆盖了hover所以设为空
+        //     }
+        //     allA[index].style.backgroundColor="#000";
+        // }
+
+		// //	move函数建立向某个方向运动
+		// function getStyle(obj,name){
+		// 	if(window.getComputedStyle){ //不加window是变量找不着就报错，加了window是属性找不到就返回undefined；
+		// 		return getComputedStyle(obj,null)[name]; //这里采用[]传入参数，如果使用.name就固定了只能得到name属性
+		// 	}else{
+		// 		return obj.currentStyle[name];
+		// 	}
+		// }
+
+		// //	obj：对象 attr：被改变的样式 target：目标位置  speed：速度
+		// function move(obj,attr,target,speed,callback) {
+		// 	clearInterval(obj.timer);
+		// 	var current=parseInt(getStyle(obj,attr));
+		// 	if(current>target){
+		// 		speed=-speed;
+		// 	}
+		// 	// 	向执行动画的对象中添加属性timer，用来保存定时器的标识
+		// 	obj.timer=setInterval(function () {
+		// 		var oldValue=parseInt(getStyle(obj,attr));
+		// 		var newValue=oldValue+speed;
+		// 		if((speed<0&&newValue<target) || (speed>0&&newValue>target)){
+		// 			newValue=target;
+		// 		}   // 每过一段时间移动固定距离，使最后一步恰好过线
+		// 		obj.style[attr]=newValue+"px";
+		// 		//	到达终点:
+		// 		if(newValue===target){
+		// 			clearInterval(obj.timer);
+		// 			callback&&callback();	//有这个参数才执行，不然没输入参数报错
+		// 		}
+		// 	},30);
+		// }
+
+		//	类的操作(先检查有没有classname，然后再添加)
+		let checkclass = document.getElementById("checkclass");
+		function ckclass(obj,cn){	//	检查是否存在classname
+			let reg = new RegExp("\\b" + cn + "\\b");
+			return reg.test(obj.className);
+		}
+		function addclass(obj,cn){	//	添加classname
+			console.log(ckclass(obj,cn));
+			if(ckclass(obj,cn) == false){
+				obj.className += " " + cn;
+				console.log("已添加");
+			}
+		}
+		function removeclass(obj,cn){	//	删除classname
+			console.log(ckclass(obj,cn));
+			if(ckclass(obj,cn) == true){
+				obj.classList.remove(cn);
+				console.log("已删除");
+			}
+		}
+		checkclass.onclick = function(){	//	切换classname
+			if(ckclass(checkclass,"hello") == false){
+				addclass(checkclass,"hello");
+			}else{
+				removeclass(checkclass,"hello");
+			}
+		}
 	</script>
 </body>
 </html>
