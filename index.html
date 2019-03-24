@@ -9,20 +9,31 @@
 	<link rel="stylesheet" type="text/css" href="./sublimetest.css">
 	<script type="text/javascript" src="./222.js"></script>
 	<!-- <script type="text/javascript" src="./jquery-3.3.1.min.js"></script> -->
+	<style type="text/css">
+		:root{
+			--shiyancolor:yellow;
+		}
+		.shiyan{
+			color:var(--shiyancolor);
+		}
+	</style>
 </head>
 <body>
 	.classname+.class
 	<div class="name" onclick="jisuan()">儿子儿子，***我是你爸爸</div>
 	<div id="constdiv">kkkkkk</div>
-	            <div class="form-group">
-	                <div class="input-group date" id="datetimepicker1" data-target-input="nearest">
-	                    <input type="text" class="form-control datetimepicker-input" data-target="#datetimepicker1"/>
-	                    <div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
-	                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-	                    </div>
-	                </div>
-	            </div>
-	
+
+    <div class="form-group">
+        <div class="input-group date" id="datetimepicker1" data-target-input="nearest">
+            <input type="text" class="form-control datetimepicker-input" data-target="#datetimepicker1"/>
+            <div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
+                <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="shiyan">这是用来实验css变量写法的div</div>
+
 <!-- <script type="text/javascript">
 	window.onload = function(){
 		for (var i = 0; i < 10; i++) {
@@ -48,6 +59,19 @@
 			todayBtn: true//显示今日按钮
         });
     });
+</script>
+<script type="text/javascript">
+	class Yideng{
+		constructor(){
+			console.log("js类实验");
+		}
+		// render(){
+		// 	return(
+		// 		<div>在js类中实验是否能够直接返回html内容</div>
+		// 	)
+		// }
+	}
+	const yideng = new Yideng();
 </script>
 </body>
 </html>

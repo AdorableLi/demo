@@ -708,36 +708,40 @@
 				alla[index].style.backgroundColor = "green";
 			}
 		}
-		//	图片自动切换
-		let lbttimer;
-		let lbtspeed = 10;
-		let oldval = imglist.offsetLeft;
-		index += 1;
-		setInterval(function(){
-			if(index >= 5){
-				index = 1;
-				console.log(index);
-			}
-			else if(parseInt(imglist.style.left) <= -1680){
-				imglist.style.left = "0px";
-				// console.log("将偏移量调整为0")
-			}
-			console.log(imglist.style.left);
-			lbttimer = setInterval(function(){
-				oldval += lbtspeed;
-				if(index >= arr.length){
-					index = 0;
-				}
-				if(oldval >= 420 * index){
-					clearInterval(lbttimer);
-					index++;
-				}
-				imglist.style.left = "-"+oldval+"px";
-				// console.log(oldval);
-				// console.log(index);
-			},40)
-		},3000)
+		//	使用css3-animation属性模拟图片移动动画
+		
 
+		// //	图片自动切换
+		// let lbttimer;
+		// let lbtspeed = 10;
+		// let oldval = imglist.offsetLeft;
+		// index += 1;
+		// setInterval(function(){
+		// 	if(index >= 5){
+		// 		index = 1;
+		// 		console.log(index);
+		// 	}
+		// 	else if(parseInt(imglist.style.left) <= -1680){
+		// 		imglist.style.left = "0px";
+		// 		// console.log("将偏移量调整为0")
+		// 	}
+		// 	console.log(imglist.style.left);
+		// 	lbttimer = setInterval(function(){
+		// 		oldval += lbtspeed;
+		// 		if(index >= arr.length){
+		// 			index = 0;
+		// 		}
+		// 		if(oldval >= 420 * index){
+		// 			clearInterval(lbttimer);
+		// 			index++;
+		// 		}
+		// 		imglist.style.left = "-"+oldval+"px";
+		// 		// console.log(oldval);
+		// 		// console.log(index);
+		// 	},40)
+		// },3000)
+
+		//	完整版，前后切换无缝的轮播图
 		// var imglist=document.getElementById("imglist");
         // var imgArr=document.getElementsByTagName("img");
         // imglist.style.width=400*imgArr.length+200+"px";

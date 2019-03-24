@@ -43,6 +43,9 @@
 	margin: 0;
 	position: absolute;
 	left: 0;
+	animation: lunbotu 30s infinite;
+	/* -webkit-animation: lunbotu 3s infinite; */
+	/* animation-delay:2s; */
 }
 #lunbotu li{
 	list-style: none;
@@ -70,5 +73,65 @@
 #nav a:hover{
 	/* opacity: 0.5;
 	filter: alpha(opacity=50); */
-	background-color: green
+	background-color: green;
+}
+#nav>:nth-child(1){
+	animation: nava_one 30s infinite;
+}
+#nav>:nth-child(2){
+	animation: nava_two 30s infinite;
+}
+#nav>:nth-child(3){
+	animation: nava_three 30s infinite;
+}
+#nav>:nth-child(4){
+	animation: nava_four 30s infinite;
+}
+#nav>:nth-child(5){
+	animation: nava_five 30s infinite;
+}
+
+/* 使用css3-animation属性模拟图片移动动画 */
+@keyframes lunbotu{
+	0%{left: 0px;}
+	13%{left: 0px;}
+	17%{left: -420px;}
+	33%{left: -420px;}
+	37%{left: -840px;}
+	53%{left: -840px;}
+	57%{left: -1260px;}
+	73%{left: -1260px;}
+	77%{left: -1680px;}
+	93%{left: -1680px;}
+	100%{left: 0px;}
+}
+@keyframes nava_one{
+	0%{background-color: green;}
+	13%{background-color: green;}
+	13.5%{background-color: red;}
+	100%{background-color: red;}
+}
+@keyframes nava_two{
+	13.5%{background-color: red;}
+	14%{background-color: green;}
+	33%{background-color: green;}
+	33.5%{background-color: red;}
+}
+@keyframes nava_three{
+	33%{background-color: red;}
+	33.5%{background-color: green;}
+	53%{background-color: green;}
+	53.5%{background-color: red;}
+}
+@keyframes nava_four{
+	53%{background-color: red;}
+	53.5%{background-color: green;}
+	73%{background-color: green;}
+	73.5%{background-color: red;}
+}
+@keyframes nava_five{
+	73%{background-color: red;}
+	73.5%{background-color: green;}
+	93%{background-color: green;}
+	93.5%{background-color: red;}
 }
